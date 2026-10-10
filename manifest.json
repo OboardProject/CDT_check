@@ -1,0 +1,113 @@
+{
+  "id": "cdt.check",
+  "name": "CDT 流量守门员",
+  "version": "1.0.0",
+  "description": "通过阿里云 ECS/CDT OpenAPI 自动保持实例运行，并在本月 CDT 流量达到阈值后关机且锁定到下月。",
+  "runtime": "oboard-js",
+  "entry": "main.js",
+  "capabilities": ["http.request", "secrets.use", "state.read", "state.write", "notifications.send", "ui.page"],
+  "http": {
+    "hosts": ["ecs.aliyuncs.com", "cdt.aliyuncs.com"],
+    "methods": ["POST"]
+  },
+  "pages": [
+    { "id": "status", "title": "CDT 守门状态", "actions": ["check_now"] }
+  ],
+  "environment": [
+    {
+      "name": "CLOUD_SITE",
+      "type": "select",
+      "label": "阿里云站点",
+      "description": "国内和国际站使用同一套 ECS/CDT OpenAPI；此项用于标记配置和账单地域。",
+      "default": "china",
+      "options": [
+        { "label": "中国站", "value": "china" },
+        { "label": "国际站", "value": "international" }
+      ]
+    },
+    {
+      "name": "REGION_ID",
+      "type": "string",
+      "label": "ECS 地域 ID",
+      "description": "例如 cn-hongkong、cn-shanghai 或 ap-southeast-1。",
+      "required": true,
+      "pattern": "^[a-z0-9-]{2,32}$",
+      "max_length": 32
+    },
+    {
+      "name": "BUSINESS_REGION_ID",
+      "type": "string",
+      "label": "CDT 业务地域 ID",
+      "description": "ListCdtInternetTraffic 的 BusinessRegionId；通常填写产生 CDT 流量的地域 ID。",
+      "required": true,
+      "pattern": "^[a-z0-9-]{2,32}$",
+      "max_length": 32
+    },
+    {
+      "name": "ECS_INSTANCE_ID",
+      "type": "string",
+      "label": "ECS 实例 ID",
+      "required": true,
+      "pattern": "^i-[a-z0-9]+$",
+      "max_length": 64
+    },
+    {
+      "name": "TRAFFIC_LIMIT_GB",
+      "type": "number",
+      "label": "本月流量阈值",
+      "description": "达到或超过此值就请求关机，并锁定到下一个账单月。",
+      "required": true,
+      "min": 0.01,
+      "max": 100000,
+      "default": 200
+    },
+    {
+      "name": "TRAFFIC_UNIT",
+      "type": "select",
+      "label": "流量单位",
+      "description": "CDT API 返回字节；GiB 与参考脚本的 1024^3 换算一致。",
+      "default": "gib",
+      "options": [
+        { "label": "GiB（1024³ 字节）", "value": "gib" },
+        { "label": "GB（1000³ 字节）", "value": "gb" }
+      ]
+    },
+    {
+      "name": "BILLING_TIMEZONE",
+      "type": "select",
+      "label": "账单月时区",
+      "description": "用于判断月初/月末；选择与账单周期一致的固定时区。",
+      "default": "Asia/Shanghai",
+      "options": [
+        { "label": "UTC", "value": "UTC" },
+        { "label": "中国/新加坡 UTC+8", "value": "Asia/Shanghai" },
+        { "label": "洛杉矶 UTC-8", "value": "America/Los_Angeles" }
+      ]
+    },
+    {
+      "name": "ACCESS_KEY_ID",
+      "type": "string",
+      "label": "阿里云 AccessKey ID",
+      "description": "只保存公开标识；请使用最小权限 RAM 用户，而不是主账号密钥。",
+      "required": true,
+      "pattern": "^[A-Za-z0-9]{8,64}$",
+      "max_length": 64
+    },
+    {
+      "name": "ACCESS_KEY_SECRET",
+      "type": "secret",
+      "label": "阿里云 AccessKey Secret",
+      "description": "只通过 SecretRef 用于签名，插件代码永远读不到明文。",
+      "required": true
+    },
+    {
+      "name": "NOTIFY",
+      "type": "boolean",
+      "label": "发送管理员通知",
+      "description": "需要在 OBoard 中预先授权通知渠道。",
+      "default": true
+    }
+  ],
+  "triggers": { "schedule": true },
+  "limits": { "timeout": "60s", "sdk_calls": 30, "http_requests": 8 }
+}
