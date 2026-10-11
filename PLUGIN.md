@@ -17,7 +17,7 @@
 3. 给实例授权后启用它，并在 OBoard 中创建 interval 计划。建议每 5 分钟运行一次；计划不是插件代码里的计时器。
 4. 为 `notifications.send` 授权管理员通知渠道（可选）。
 
-`CLOUD_SITE` 只标记中国站或国际站。ECS 与 CDT 的 OpenAPI 请求都使用官方公共端点，国内/国际的实际区别由 `REGION_ID` 与 `BUSINESS_REGION_ID` 决定；例如 `cn-hongkong`、`cn-shanghai`、`ap-southeast-1`。
+流量单位固定为 GiB（1024³ 字节），不在配置中提供单位选择。`CLOUD_SITE` 只标记中国站或国际站。ECS 与 CDT 的 OpenAPI 请求都使用官方公共端点，国内/国际的实际区别由 `REGION_ID` 与 `BUSINESS_REGION_ID` 决定；例如 `cn-hongkong`、`cn-shanghai`、`ap-southeast-1`。
 
 ## 官方接口参考
 

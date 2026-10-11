@@ -11,7 +11,7 @@ OBoard 插件：通过阿里云 ECS/CDT API 自动管理实例开关机。
 
 ## 使用
 
-在 OBoard 安装插件并创建实例，填写地域、CDT 业务地域、ECS 实例 ID、流量阈值和阿里云 RAM AccessKey。然后授权插件能力，启用实例，并创建 interval 计划（建议每 5 分钟执行一次）。
+在 OBoard 安装插件并创建实例，填写地域、CDT 业务地域、ECS 实例 ID、流量阈值和阿里云 RAM AccessKey。流量单位固定为 GiB（1024³ 字节）。然后授权插件能力，启用实例，并创建 interval 计划（建议每 5 分钟执行一次）。
 
 `ACCESS_KEY_SECRET` 通过 OBoard SecretRef 保存。建议使用仅包含 `ecs:DescribeInstances`、`ecs:StartInstance`、`ecs:StopInstance` 和 CDT 流量读取权限的 RAM 用户。
 

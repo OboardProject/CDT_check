@@ -62,17 +62,6 @@
       "default": 200
     },
     {
-      "name": "TRAFFIC_UNIT",
-      "type": "select",
-      "label": "流量单位",
-      "description": "CDT API 返回字节；GiB 与参考脚本的 1024^3 换算一致。",
-      "default": "gib",
-      "options": [
-        { "label": "GiB（1024³ 字节）", "value": "gib" },
-        { "label": "GB（1000³ 字节）", "value": "gb" }
-      ]
-    },
-    {
       "name": "BILLING_TIMEZONE",
       "type": "select",
       "label": "账单月时区",

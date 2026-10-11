@@ -120,10 +120,6 @@ function requestInstanceAction(action, date) {
   }, date)
 }
 
-function trafficUnit() {
-  return env.TRAFFIC_UNIT === 'gb' ? 1000 * 1000 * 1000 : 1024 * 1024 * 1024
-}
-
 function readGuard(month) {
   const entry = oboard.state.get(STATE_KEY)
   if (!entry.exists || !entry.value || entry.value.month !== month) {
@@ -156,8 +152,8 @@ function render(result) {
       title: 'CDT 流量守门员',
       body: [
         { type: 'badge', text: statusText, tone },
-        { type: 'metric', label: '本月 CDT 流量', value: `${result.traffic_gb.toFixed(2)} ${env.TRAFFIC_UNIT === 'gb' ? 'GB' : 'GiB'}`, tone },
-        { type: 'metric', label: '关机阈值', value: `${Number(env.TRAFFIC_LIMIT_GB).toFixed(2)} ${env.TRAFFIC_UNIT === 'gb' ? 'GB' : 'GiB'}` },
+        { type: 'metric', label: '本月 CDT 流量', value: `${result.traffic_gb.toFixed(2)} GiB`, tone },
+        { type: 'metric', label: '关机阈值', value: `${Number(env.TRAFFIC_LIMIT_GB).toFixed(2)} GiB` },
         { type: 'text', text: `地域 ${env.REGION_ID} · 实例 ${env.ECS_INSTANCE_ID} · ${result.month}` },
         { type: 'text', text: result.action_message },
         { type: 'button', action: 'check_now', label: '立即检查' },
@@ -176,7 +172,7 @@ function main(run) {
     // response therefore fails closed and cannot wake an instance by mistake.
     bytes = queryTraffic(clock.apiDate)
     instance = describeInstance(clock.apiDate)
-    const trafficGb = bytes / trafficUnit()
+    const trafficGb = bytes / (1024 * 1024 * 1024)
     const threshold = trafficGb >= Number(env.TRAFFIC_LIMIT_GB)
     const status = String(instance.Status || 'Unknown')
     let message = `ECS 状态：${status}`
