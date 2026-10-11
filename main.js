@@ -100,7 +100,7 @@ function describeInstance(date) {
 
 function queryTraffic(date) {
   const payload = callAliyun(CDT_HOST, 'ListCdtInternetTraffic', {
-    BusinessRegionId: env.BUSINESS_REGION_ID,
+    BusinessRegionId: env.REGION_ID,
   }, date)
   const details = payload.TrafficDetails
   if (!Array.isArray(details) || details.length === 0) throw new OBoardError('ALIYUN_TRAFFIC_EMPTY', 'CDT 未返回 TrafficDetails，已停止自动开关机决策')

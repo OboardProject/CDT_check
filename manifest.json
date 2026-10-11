@@ -29,16 +29,7 @@
       "name": "REGION_ID",
       "type": "string",
       "label": "ECS 地域 ID",
-      "description": "例如 cn-hongkong、cn-shanghai 或 ap-southeast-1。",
-      "required": true,
-      "pattern": "^[a-z0-9-]{2,32}$",
-      "max_length": 32
-    },
-    {
-      "name": "BUSINESS_REGION_ID",
-      "type": "string",
-      "label": "CDT 业务地域 ID",
-      "description": "ListCdtInternetTraffic 的 BusinessRegionId；通常填写产生 CDT 流量的地域 ID。",
+      "description": "同时作为 CDT BusinessRegionId 使用，例如 cn-hongkong、cn-shanghai 或 ap-southeast-1。",
       "required": true,
       "pattern": "^[a-z0-9-]{2,32}$",
       "max_length": 32
