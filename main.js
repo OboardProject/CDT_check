@@ -136,7 +136,7 @@ function saveGuard(guard) {
 function notifyOnce(guard, action, body) {
   if (!env.NOTIFY || guard.value.last_notification === action) return
   try {
-    oboard.notifications.send({ title: 'OBoard CDT 流量守门员', body })
+    oboard.notifications.send({ title: 'OBoard CDT 流量检测与保活', body })
     guard.value.last_notification = action
   } catch (error) {
     log.warn('通知未发送', error.code || error.message || String(error))
@@ -149,7 +149,7 @@ function render(result) {
   oboard.ui.publish({
     page: 'status',
     document: {
-      title: 'CDT 流量守门员',
+      title: 'CDT 流量检测与保活',
       body: [
         { type: 'badge', text: statusText, tone },
         { type: 'metric', label: '本月 CDT 流量', value: `${result.traffic_gb.toFixed(2)} GiB`, tone },
@@ -230,7 +230,7 @@ function main(run) {
     guard.value.last_action = 'error'
     guard.value.last_error = message
     try { saveGuard(guard) } catch (stateError) { log.error('状态保存失败', stateError.code || stateError.message || String(stateError)) }
-    try { oboard.ui.publish({ page: 'status', document: { title: 'CDT 流量守门员', body: [{ type: 'badge', text: '检查失败', tone: 'danger' }, { type: 'text', text: message }, { type: 'button', action: 'check_now', label: '重试检查' }] } }) } catch (uiError) { log.warn('状态页发布失败', uiError.code || uiError.message || String(uiError)) }
+    try { oboard.ui.publish({ page: 'status', document: { title: 'CDT 流量检测与保活', body: [{ type: 'badge', text: '检查失败', tone: 'danger' }, { type: 'text', text: message }, { type: 'button', action: 'check_now', label: '重试检查' }] } }) } catch (uiError) { log.warn('状态页发布失败', uiError.code || uiError.message || String(uiError)) }
     throw error
   }
 }

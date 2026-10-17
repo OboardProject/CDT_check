@@ -1,6 +1,6 @@
 {
   "id": "cdt.check",
-  "name": "CDT 流量守门员",
+  "name": "CDT 流量检测与保活",
   "version": "1.0.0",
   "description": "通过阿里云 ECS/CDT OpenAPI 自动保持实例运行，并在本月 CDT 流量达到阈值后关机且锁定到下月。",
   "runtime": "oboard-js",
@@ -11,7 +11,7 @@
     "methods": ["POST"]
   },
   "pages": [
-    { "id": "status", "title": "CDT 守门状态", "actions": ["check_now"] }
+    { "id": "status", "title": "CDT 流量状态", "actions": ["check_now"] }
   ],
   "environment": [
     {
